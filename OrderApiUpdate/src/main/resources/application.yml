@@ -1,0 +1,30 @@
+server:
+  port: 8090
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5436/ordersys_read
+    username: ordersys_app
+    password: "1234"
+    driver-class-name: org.postgresql.Driver
+
+    jpa:
+      hibernate:
+        ddl-auto: validate
+      open-in-view: false
+
+  application:
+    name: OrderApiUpdate
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: orders-update-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+    listener:
+      ack-mode: record

@@ -1,0 +1,29 @@
+{
+  "name": "ordersys-outbox-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "database.hostname": "postgres",
+    "database.port": "5432",
+    "database.user": "ordersys_app",
+    "database.password": "1234",
+    "database.dbname": "ordersys",
+    "topic.prefix": "ordersys",
+    "plugin.name": "pgoutput",
+    "slot.name": "ordersys_outbox_slot",
+    "publication.name": "ordersys_outbox_publication",
+    "publication.autocreate.mode": "filtered",
+    "table.include.list": "public.outbox_eventos",
+    "tombstones.on.delete": "false",
+    "transforms": "outbox",
+    "transforms.outbox.type": "io.debezium.transforms.outbox.EventRouter",
+    "transforms.outbox.table.field.event.id": "uuid",
+    "transforms.outbox.table.field.event.key": "agregado_id",
+    "transforms.outbox.table.field.event.type": "tipo_evento",
+    "transforms.outbox.table.field.event.payload": "payload",
+    "transforms.outbox.route.by.field": "agregado_tipo",
+    "transforms.outbox.route.topic.replacement": "outbox.event.${routedByValue}",
+    "transforms.outbox.table.expand.json.payload": "true",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false"
+  }
+}

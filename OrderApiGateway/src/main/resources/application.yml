@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: OrderApiGateway
+
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: order-select
+              uri: http://localhost:8091
+              predicates:
+                - Path=/api/v1/orders,/api/v1/orders/**
+                - Method=GET
+
+            - id: reports-select
+              uri: http://localhost:8091
+              predicates:
+                - Path=/api/v1/reports,/api/v1/reports/**
+                - Method=GET
+
+            - id: order-insert
+              uri: http://localhost:8081
+              predicates:
+                - Path=/api/v1/orders
+                - Method=POST
+
+            - id: order-status-update
+              uri: http://localhost:8081
+              predicates:
+                - Path=/api/v1/orders/*/status
+                - Method=PATCH
+
+            - id: order-cancellation
+              uri: http://localhost:8081
+              predicates:
+                - Path=/api/v1/orders/*/cancellation
+                - Method=POST
